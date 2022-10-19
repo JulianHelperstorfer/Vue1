@@ -1,28 +1,73 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="https://vuejs.org/images/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h3>Eample</h3>
+    <hr>
+    <form @submit.prevent="addSubject" class="inputForm">
+      <label for="item">Enter new  subject:</label>
+      <input type="text" v-model="newSubject">
+      <button>Add subject</button>
+    </form>
+    <hr>
+    <ul>
+      <li v-for="(item,index) in allSubjects">
+        {{ item.content }}
+        <button  @click="removeSubject(index)">Delete</button>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import {ref} from "vue";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  setup() {
+    const newSubject = ref("Mittwoch");
+    const allSubjects = ref([])
+
+    function addSubject() {
+      allSubjects.value.push({
+        content: newSubject.value,
+      })
+      newSubject.value = "";
+      console.log(allSubjects.value);
+    }
+
+    function removeSubject(index){
+      console.log("remove " + index);
+      allSubjects.value.splice(index,1);
+    }
+
+    return {
+      newSubject,
+      addSubject,
+      allSubjects,
+      removeSubject
+    }
   }
+  
 }
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+h3 {
+  margin-bottom: 20p;
+}
+
+.inputForm {
+  display:flex;
+  justify-content: space-between;
+}
+
+ul li button {
+  margin-left: 35px;
 }
 </style>
